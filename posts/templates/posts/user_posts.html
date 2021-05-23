@@ -1,24 +1,20 @@
-{% extends 'posts/base.html' %}
+{% extends "posts/base.html" %}
 {% block content %}
-    <!-- Posts list -->
+    <!-- User Posts -->
+    <h1 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
     {% for post in posts %}
         <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}" alt="">
+            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
             <div class="media-body">
                 <div class="article-metadata">
                     <a class="mr-2" href="{% url 'posts:user-posts' post.author.username %}">{{ post.author }}</a>
-                    <small class="text-muted">{{ post.date_posted|date:' F d, Y' }}</small>
+                    <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
                 </div>
-                <h3><a class="article-title" href="{% url 'posts:detail' post.id %}">{{ post.title|title }}</a></h3>
-                <p class="article-content">{{ post.content|truncatewords:50 }}
-                    <small class="text-muted">
-                        <a class="ml-2" href="{% url 'posts:detail' post.id %}">read whole post</a>
-                    </small>
-                </p>
+                <h2><a class="article-title" href="{% url 'posts:detail' post.id %}">{{ post.title }}</a></h2>
+                <p class="article-content">{{ post.content }}</p>
             </div>
         </article>
     {% endfor %}
-        <p>Today is {% now 'F d, Y' %}</p>
     <!-- Pagination -->
     {% if is_paginated %}
         {% if page_obj.has_previous %}
